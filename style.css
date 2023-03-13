@@ -1,4 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+:root{
+    --background1: rgb(16,16,16);
+    --background-menu: rgb(39, 39, 39);
+    --footer: rgb(24, 24, 24);
+    --basicBlack: #171515;
+    --secondTextColor: rgb(120, 179, 45);
+}
 *{
     font-family: 'Roboto Mono', monospace;
     margin: 0;
@@ -6,36 +13,50 @@
     box-sizing: border-box;
 }
 body{
-    background-color: rgb(16, 16, 16);
+    background-color: var(--background1);
 }
 h1{
     font-weight: bold;
     font-size: 45px;
     text-align: center;
     margin: 100px 0;
-    color: white;
+    letter-spacing: 5px;
+    text-shadow: 1px 1px 5px black;
+    color: var(--secondTextColor);
 }
 main{
-    background-color: whitesmoke;
     border-radius: 2px;
-    box-shadow: 1px 1px 5px black;
+    box-shadow: 1px 1px 15px black;
     width: 80%;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     margin: 0 auto;
+    overflow: hidden;
+}
+footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: var(--secondTextColor);
+    padding: 30px;
+    text-align: center;
+    background-color: var(--footer);
 }
 .menubtns{
-    background-color: rgb(39, 39, 39);
+    background-color: var(--background-menu);
     border-bottom: 5px solid black;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     padding: 20px;
     color: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-size: 20px;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
+}
+.menubtns span{
+    text-align: right;
+    color: var(--secondTextColor);
 }
 #search{
     padding: 5px;
@@ -45,6 +66,26 @@ main{
     background-color: rgb(89, 89, 89);
     border: 1px solid black;
 }
+.searchbox{
+    display: flex;
+}
+.searchBtn{
+    margin-left: 10px;
+    font-size: 15px;
+    padding: 10px;
+    justify-self: flex-start;
+    background-color: transparent;
+    color: var(--secondTextColor);
+    border: 2px solid var(--secondTextColor);
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 200ms, background-color 200ms;
+}
+.searchBtn:hover{
+    color: white;
+    background-color: var(--secondTextColor);
+}
 .userslist{
     list-style-type: none;
 }
@@ -52,5 +93,78 @@ main{
     display: flex;
     height: 75px;
     padding: 10px;
+    background-color: whitesmoke;
     justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--basicBlack);
+}
+.userlist li:last-child{
+    border: none;
+}
+.userImg{
+    width: 70px;
+}
+.username{
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+    border-bottom: 2px solid rgb(89, 89, 89);
+}
+.goToProfile{
+    width: 100px;
+    background-color: var(--basicBlack);
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    border: 5px solid #141313;
+    border-radius: 10px;
+    transition: background-color 200ms, border-color 200ms;
+}
+.goToProfile:hover{
+    background-color: var(--secondTextColor);
+    border-color: var(--secondTextColor);
+}
+.goToProfile img{
+    width: 35px;
+}
+@media screen and (max-width: 1024px){
+    .accCreated{
+        display: none;
+    }
+}
+@media screen and (max-width: 768px){
+    .menubtns{
+        display: block;
+    }
+    #search{
+        width: 100%;
+    }
+    .menubtns span{
+        text-align: left;
+        display: block;
+    }
+}
+@media screen and (max-width: 425px){
+    .menubtns{
+        border-bottom: 2px solid black;
+    }
+    .menubtns span{
+        position: absolute;
+        top: 250px;
+        text-align: center;
+        left: 50%;
+        width: 95%;
+        transform: translateX(-50%);
+    }
+    .username{
+        border: none;
+        margin-right: 10px;
+    }
+    .goToProfile{
+        padding: 5px;
+        width: 75px;
+    }
+    .bio{
+        display: none;
+    }
 }
