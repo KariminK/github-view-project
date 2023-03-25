@@ -1,12 +1,12 @@
 const search = document.querySelector("#search");
 const searchBtn = document.querySelector(".searchBtn");
 const userlist = document.querySelector(".userslist");
-let users = []
+const errorTxt = document.querySelector("#errorMsg");
+
 searchBtn.addEventListener('click', ()=>{
-    users = search.value.split(", ");
-    console.log(users);
     userlist.innerHTML = "";
-    // mainfunc();
+    const users = search.value.split(", ");
+    mainfunc(users);
     search.value = "";
 })
 
@@ -50,10 +50,26 @@ const createUserElement = (profileImgLink, username, bio, createData, linkToProf
     console.log(liEl);
     userlist.appendChild(liEl);
 }
-function mainfunc(){
-    users.forEach(async user=>{
-        let userData = await fetch("https://api.github.com/users/"+user).then(response => response.json());
-        console.log(userData);
-        createUserElement(userData.avatar_url, userData.name, userData.bio, userData.created_at, userData.html_url);
+async function mainfunc(users){
+    console.log(users);
+    const usersdata = await Promise.allSettled(users.map(async user=>{
+        try{
+            let userData = await fetch("https://api.github.com/users/"+user).then(response => response.json());
+            console.log(userData);
+            if (!userData.name) {
+                throw new Error("user not found");
+            }
+            const {avatar_url, name, bio, created_at, html_url} = userData;
+            createUserElement(avatar_url, name, bio, created_at, html_url);
+        }catch(error){
+            errorTxt.classList.remove("hide");
+            errorTxt.innerText = "Nie znaleziono: " + user;
+        }
+    }))
+    console.log(usersdata);
+    const usersnotfound = usersdata.filter(e=>{
+
     })
+    
+    
 }
