@@ -6,7 +6,13 @@ const errorTxt = document.querySelector("#errorMsg");
 searchBtn.addEventListener('click', ()=>{
     userlist.innerHTML = "";
     const users = search.value.split(", ");
-    mainfunc(users);
+    if(search.value != ""){
+        errorTxt.classList.add('hide');
+        mainfunc(users);
+    }else{
+        errorTxt.innerText = "Wpisz nazwy użytkowników";
+        errorTxt.classList.remove('hide');
+    }
     search.value = "";
 })
 
@@ -53,22 +59,26 @@ const createUserElement = (profileImgLink, username, bio, createData, linkToProf
 async function mainfunc(users){
     console.log(users);
     const usersdata = await Promise.allSettled(users.map(async user=>{
-        try{
-            let userData = await fetch("https://api.github.com/users/"+user).then(response => response.json());
-            if (!userData.name) {
-                throw new Error("user not found");
-            }
-            const {avatar_url, name, bio, created_at, html_url} = userData;
-            createUserElement(avatar_url, name, bio, created_at, html_url);
-            return userData;
-        }catch(error){
-            errorTxt.classList.remove("hide");
-            errorTxt.innerText = "Nie znaleziono: " + user;
+        // try{
+        let userData = await fetch("https://api.github.com/users/"+user).then(response => response.json());
+        if (!userData.name) {
+            throw new Error(user);
         }
+        const {avatar_url, name, bio, created_at, html_url} = userData;
+        createUserElement(avatar_url, name, bio, created_at, html_url);
+        return userData;
+        // }catch(error){
+        //     errorTxt.classList.remove("hide");
+        //     errorTxt.innerText = "Nie znaleziono: " + user;
+        // }
     }))
     console.log(usersdata);
+    usersdata.forEach(e=>console.log(e));
     const usersnotfound = usersdata.filter(e=>{
-        e.value == undefined;
+        return e.status == 'rejected';
+    })
+    usersnotfound.forEach(e=>{
+        console.log(e.reason.message);
     })
     console.log(usersnotfound);
 }
