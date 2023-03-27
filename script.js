@@ -55,12 +55,12 @@ async function mainfunc(users){
     const usersdata = await Promise.allSettled(users.map(async user=>{
         try{
             let userData = await fetch("https://api.github.com/users/"+user).then(response => response.json());
-            console.log(userData);
             if (!userData.name) {
                 throw new Error("user not found");
             }
             const {avatar_url, name, bio, created_at, html_url} = userData;
             createUserElement(avatar_url, name, bio, created_at, html_url);
+            return userData;
         }catch(error){
             errorTxt.classList.remove("hide");
             errorTxt.innerText = "Nie znaleziono: " + user;
@@ -68,8 +68,7 @@ async function mainfunc(users){
     }))
     console.log(usersdata);
     const usersnotfound = usersdata.filter(e=>{
-
+        e.value == undefined;
     })
-    
-    
+    console.log(usersnotfound);
 }
