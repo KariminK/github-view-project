@@ -59,7 +59,6 @@ const createUserElement = (profileImgLink, username, bio, createData, linkToProf
 async function mainfunc(users){
     console.log(users);
     const usersdata = await Promise.allSettled(users.map(async user=>{
-        // try{
         let userData = await fetch("https://api.github.com/users/"+user).then(response => response.json());
         if (!userData.name) {
             throw new Error(user);
@@ -67,18 +66,11 @@ async function mainfunc(users){
         const {avatar_url, name, bio, created_at, html_url} = userData;
         createUserElement(avatar_url, name, bio, created_at, html_url);
         return userData;
-        // }catch(error){
-        //     errorTxt.classList.remove("hide");
-        //     errorTxt.innerText = "Nie znaleziono: " + user;
-        // }
     }))
     console.log(usersdata);
     usersdata.forEach(e=>console.log(e));
     const usersnotfound = usersdata.filter(e=>{
         return e.status == 'rejected';
-    })
-    usersnotfound.forEach(e=>{
-        console.log(e.reason.message);
     })
     console.log(usersnotfound);
 }
