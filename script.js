@@ -5,7 +5,7 @@ const errorTxt = document.querySelector("#errorMsg");
 
 searchBtn.addEventListener('click', ()=>{
     userlist.innerHTML = "";
-    const users = search.value.split(", ");
+    let users = search.value.split(" ");
     if(search.value != ""){
         errorTxt.classList.add('hide');
         mainfunc(users);
@@ -53,11 +53,9 @@ const createUserElement = (profileImgLink, username, bio, createData, linkToProf
     liEl.appendChild(userDetailsDiv);
     liEl.appendChild(createDateDiv);
     liEl.appendChild(goToProfileLink);
-    console.log(liEl);
     userlist.appendChild(liEl);
 }
 async function mainfunc(users){
-    console.log(users);
     const usersdata = await Promise.allSettled(users.map(async user=>{
         let userData = await fetch("https://api.github.com/users/"+user).then(response => response.json());
         if (!userData.name) {
@@ -68,9 +66,11 @@ async function mainfunc(users){
         return userData;
     }))
     console.log(usersdata);
-    usersdata.forEach(e=>console.log(e));
     const usersnotfound = usersdata.filter(e=>{
         return e.status == 'rejected';
-    })
-    console.log(usersnotfound);
+    }).map(e=>e.reason.message);
+    if (usersnotfound.length > 0) {
+        errorTxt.innerText = "Nie znaleziono: " + usersnotfound;
+        errorTxt.classList.remove('hide');
+    }
 }
