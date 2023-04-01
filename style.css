@@ -128,6 +128,13 @@ footer a:hover{
     display: inline;
     border-bottom: 2px solid rgb(89, 89, 89);
 }
+.followers{
+    margin-right: auto;
+}
+.btns{
+    display: flex;
+    gap: 10px;
+}
 .goToProfile{
     width: 100px;
     background-color: var(--basicBlack);
@@ -145,8 +152,18 @@ footer a:hover{
 .goToProfile img{
     width: 35px;
 }
+.accCreated{
+    margin-right: 10px;
+}
+.twitter{
+    background-color: #1DA1F2;
+    border-color: #1b9dee;
+}
 @media screen and (max-width: 1024px){
     .accCreated{
+        display: none;
+    }
+    .followers{
         display: none;
     }
     .menubtns span{
